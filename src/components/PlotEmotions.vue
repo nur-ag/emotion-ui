@@ -16,6 +16,13 @@
         </b-select>
       </b-field>
 
+      <b-field label="Variable" expanded>
+        <b-select v-model="targetColumn" expanded>
+          <option value="emotion">Emotion</option>
+          <option value="category">Category</option>
+        </b-select>
+      </b-field>
+
       <b-field label="Order" expanded>
         <b-select v-model="order" expanded>
           <option value="ascending">
@@ -57,21 +64,44 @@ export default {
     return {
       activePlot: null,
       sortingMode: 'score',
+      targetColumn: 'emotion',
       order: 'ascending'
     }
   },
   computed: {
     drawState () {
-      return this.activePlot + this.sortingMode + this.order
+      return this.activePlot + this.sortingMode + this.order + this.targetColumn
+    },
+    groupedScores () {
+      const target = this.targetColumn
+      const groupedByVariable = this.scores.reduce(function (acc, row) {
+        const propValue = row[target]
+        if (propValue in acc === false) {
+          acc[propValue] = []
+        }
+        acc[propValue].push(row)
+        return acc
+      }, {})
+
+      return Object.entries(groupedByVariable).map(function (pair) {
+        return {
+          score: Math.max(...pair[1].map(x => x.score)),
+          label: pair[0],
+          emotion: pair[0],
+          category: pair[1][0].category,
+          color: pair[1][0].color
+        }
+      })
     },
     sortedScores () {
-      var scoresToRevert = this.scores
+      const groupedScores = this.groupedScores
+      var scoresToRevert = groupedScores
       if (this.sortingMode === 'score') {
-        scoresToRevert = [...this.scores].sort((x, y) => x.score < y.score)
+        scoresToRevert = [...groupedScores].sort((x, y) => x.score < y.score)
       } else if (this.sortingMode === 'emotion') {
-        scoresToRevert = [...this.scores].sort((x, y) => x.emotion > y.emotion)
+        scoresToRevert = [...groupedScores].sort((x, y) => x.emotion > y.emotion)
       } else if (this.sortingMode === 'category') {
-        scoresToRevert = [...this.scores].sort((x, y) => x.category > y.category || (x.category === y.category && x.score < y.score))
+        scoresToRevert = [...groupedScores].sort((x, y) => x.category > y.category || (x.category === y.category && x.score < y.score))
       }
 
       if (this.order === 'ascending') {

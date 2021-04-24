@@ -45,13 +45,17 @@
           </div>
         </div>
 
-        <section v-if="sortedScores != null && sortedScores.length > 0">
+        <section v-if="sortedScores != null">
           <hr/>
 
           <div class="level">
             <div class="is-pulled-left">
-              <h2 class="subtitle">
+              <h2 class="subtitle" v-if="showOnlyActive">
                 Top {{ maxToPredict }} Detected Emotions:
+              </h2>
+
+              <h2 class="subtitle" v-else>
+                Top {{ maxToPredict }} Emotions by Probability:
               </h2>
             </div>
 
@@ -66,11 +70,29 @@
           </div>
 
           <div class="content">
-            <ol>
+            <ol v-if="sortedScores.length > 0">
               <li v-for="item in sortedScores.slice(0, this.maxToPredict)" :key="item.id">
                 <b>{{ item.emotion }}</b> ({{ item.category }}): {{ Math.round(10000 * item.score) / 100 }}%
+                <b-tag v-if="item.active && !showOnlyActive" type="is-info">
+                  <b-tooltip multilined :label="'This emotion triggered because the score is over the threshold (' + (Math.round(10000 * item.threshold) / 100) + ').'">
+                    Triggered
+                  </b-tooltip>
+                </b-tag>
               </li>
             </ol>
+            <ul v-else>
+              <li>
+                We could not detect any emotions over the activation thresholds!
+              </li>
+            </ul>
+          </div>
+
+          <div class="column">
+            <div class="is-pulled-right">
+              <b-switch size="is-small" v-model="showOnlyActive">
+                Triggered Emotions Only
+              </b-switch>
+            </div>
           </div>
         </section>
       </div>
@@ -85,7 +107,8 @@ export default {
   },
   data () {
     return {
-      maxToPredict: 3
+      maxToPredict: 5,
+      showOnlyActive: true
     }
   },
   computed: {
@@ -96,7 +119,7 @@ export default {
         return []
       } else {
         const queryScores = this.query.scores.slice()
-        return queryScores.sort((x, y) => x.score < y.score)
+        return queryScores.filter(x => x.active || (!this.showOnlyActive)).sort((x, y) => x.score < y.score)
       }
     }
   }

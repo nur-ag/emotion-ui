@@ -32,6 +32,15 @@
       <b-table-column field="score" label="Score" sortable v-slot="props" cellClass="has-text-right">
         {{ Math.round(10000 * props.row.score) / 100 }}
       </b-table-column>
+
+      <b-table-column field="threshold" label="Threshold" sortable v-slot="props" cellClass="has-text-right">
+        {{ Math.round(10000 * props.row.threshold) / 100 }}
+      </b-table-column>
+
+      <b-table-column field="active" label="S > T" sortable v-slot="props" cellClass="has-text-right">
+        <b-icon v-if="props.row.active" icon="check">
+        </b-icon>
+      </b-table-column>
     </b-table>
   </div>
 </template>

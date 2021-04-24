@@ -55,18 +55,30 @@
                         <timeago :datetime="query.timestamp" :auto-update="60"></timeago>
                       </small>
                       <span>·</span>
-                      <a v-on:click="activeQueryIndex = index + (currentPage - 1) * perPage">
-                        <b-icon
-                          icon="sync-alt"
-                          size="is-small">
-                        </b-icon>
+                      <a v-on:click="activeQueryIndex = index + (currentPage - 1) * perPage" v-if="query.status === 'Ready'">
+                        <b-tooltip multiline label="View query results">
+                          <b-icon
+                            icon="eye"
+                            size="is-small">
+                          </b-icon>
+                        </b-tooltip>
+                      </a>
+                      <a v-on:click="resendQuery(index)" v-else>
+                        <b-tooltip multiline label="Resend query">
+                          <b-icon
+                            icon="sync-alt"
+                            size="is-small">
+                          </b-icon>
+                        </b-tooltip>
                       </a>
                       <span>·</span>
                       <a v-on:click="showDeletePrompt(index)">
-                        <b-icon
-                          icon="trash"
-                          size="is-small">
-                        </b-icon>
+                        <b-tooltip multiline label="Delete query results">
+                          <b-icon
+                            icon="trash"
+                            size="is-small">
+                          </b-icon>
+                        </b-tooltip>
                       </a>
                     </span>
                   </div>
@@ -163,7 +175,7 @@ export default {
     downloadHistory () {
       let tsvContent = 'data:text/tsv;charset=utf-8,'
       tsvContent += this.headerRow
-      const queries = this.queries.filter(x => x.scores.length > 0)
+      const queries = this.queries.filter(x => (x.scores.length > 0) && (x.status === 'Ready'))
       const rows = queries.map(this.queryAsRow)
       rows.forEach(function (row) {
         tsvContent += row
@@ -181,7 +193,7 @@ export default {
       let emotionScores = ''
       if (query.scores.length > 0) {
         const allEmotions = [...query.scores].sort((x, y) => x.emotion > y.emotion)
-        emotionScores = allEmotions.map(x => x.score).join('\t')
+        emotionScores = allEmotions.map(x => (x.score + '>' + x.threshold + '=' + x.active)).join('\t')
       }
       return query.query + '\t' +
              query.dataset + '\t' +
@@ -219,56 +231,23 @@ export default {
         onConfirm: () => this.deleteIndex(index)
       })
     },
+    resendQuery (index) {
+      const queryIndex = index + (this.currentPage - 1) * this.perPage
+      const queryObject = this.queries[queryIndex]
+      this.deleteIndex(index)
+      this.submitQuery({
+        query: queryObject.query,
+        dataset: queryObject.dataset,
+        extractor: queryObject.extractor,
+        model: queryObject.model
+      })
+    },
     deleteIndex (index) {
       if (index < this.activeQueryIndex) {
         this.activeQueryIndex -= 1
       }
       this.queries.splice(index, 1)
       this.queries = [...this.queries]
-    },
-    computeEmotions (queryData) {
-      function computeStatusCallback () {
-        if (Math.random() < 0.3) {
-          queryData.status = 'Error'
-          queryData.error = 'Something went wrong with P(Error) < 0.3 while generating the fake data for this demo!'
-          return
-        }
-
-        queryData.status = 'Ready'
-        queryData.scores = [
-          {id: 0, emotion: 'Admiration', score: 0.7553462683984468, category: 'Positive', color: 'lightgreen'},
-          {id: 1, emotion: 'Amusement', score: 0.025764770838766604, category: 'Positive', color: 'lightgreen'},
-          {id: 2, emotion: 'Anger', score: 0.5838975002500222, category: 'Negative', color: 'plum'},
-          {id: 3, emotion: 'Annoyance', score: 0.7694561771264429, category: 'Negative', color: 'plum'},
-          {id: 4, emotion: 'Approval', score: 0.2466482053715996, category: 'Positive', color: 'lightgreen'},
-          {id: 5, emotion: 'Caring', score: 0.387508712556617, category: 'Positive', color: 'lightgreen'},
-          {id: 6, emotion: 'Confusion', score: 0.34908573345745364, category: 'Ambiguous', color: 'grey'},
-          {id: 7, emotion: 'Curiosity', score: 0.7062971470799727, category: 'Ambiguous', color: 'grey'},
-          {id: 8, emotion: 'Desire', score: 0.5396400474525894, category: 'Positive', color: 'lightgreen'},
-          {id: 9, emotion: 'Disappointment', score: 0.006589419061046375, category: 'Negative', color: 'plum'},
-          {id: 10, emotion: 'Disapproval', score: 0.6247346061502691, category: 'Negative', color: 'plum'},
-          {id: 11, emotion: 'Disgust', score: 0.07220075701424788, category: 'Negative', color: 'plum'},
-          {id: 12, emotion: 'Embarrassment', score: 0.9050344508137135, category: 'Negative', color: 'plum'},
-          {id: 13, emotion: 'Excitement', score: 0.4867998709862663, category: 'Positive', color: 'lightgreen'},
-          {id: 14, emotion: 'Fear', score: 0.40533474470415554, category: 'Negative', color: 'plum'},
-          {id: 15, emotion: 'Gratitude', score: 0.20723987729942794, category: 'Positive', color: 'lightgreen'},
-          {id: 16, emotion: 'Grief', score: 0.5568011503218786, category: 'Negative', color: 'plum'},
-          {id: 17, emotion: 'Joy', score: 0.6228143057234771, category: 'Positive', color: 'lightgreen'},
-          {id: 18, emotion: 'Love', score: 0.7020810252440777, category: 'Positive', color: 'lightgreen'},
-          {id: 19, emotion: 'Nervousness', score: 0.3890938098727208, category: 'Negative', color: 'plum'},
-          {id: 20, emotion: 'Optimism', score: 0.4885487647853345, category: 'Positive', color: 'lightgreen'},
-          {id: 21, emotion: 'Pride', score: 0.9035032322842532, category: 'Positive', color: 'lightgreen'},
-          {id: 22, emotion: 'Realization', score: 0.417520815517466, category: 'Ambiguous', color: 'grey'},
-          {id: 23, emotion: 'Relief', score: 0.532291215525602, category: 'Positive', color: 'lightgreen'},
-          {id: 24, emotion: 'Remorse', score: 0.2894742349691708, category: 'Negative', color: 'plum'},
-          {id: 25, emotion: 'Sadness', score: 0.7184037034641574, category: 'Negative', color: 'plum'},
-          {id: 26, emotion: 'Surprise', score: 0.54923785689583, category: 'Ambiguous', color: 'grey'},
-          {id: 27, emotion: 'Neutral', score: 0.08899088672030997, category: 'Ambiguous', color: 'grey'}
-        ]
-      }
-
-      const timeout = Math.round(Math.random() * 1000)
-      setTimeout(computeStatusCallback, 200 + timeout)
     },
     submitQuery (queryObject) {
       this.currentId += 1
@@ -283,8 +262,27 @@ export default {
         timestamp: Date.now(),
         scores: []
       }
-      this.computeEmotions(newQuery)
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: queryObject.query, model: 'test' })
+      }
+      fetch(this.$hostname + '/predict/', requestOptions)
+        .then(async response => {
+          const data = await response.json()
+          if (!response.ok) {
+            newQuery.status = 'Error'
+          } else {
+            newQuery.status = 'Ready'
+          }
+          newQuery.scores = data.emotions
+        })
+        .catch(error => {
+          newQuery.status = 'Error'
+          newQuery.error = error
+        })
       this.queries.unshift(newQuery)
+      this.queries = [...this.queries]
     }
   },
   components: {

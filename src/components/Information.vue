@@ -8,7 +8,7 @@
 
     <div class="level">
       <div class="is-pulled-left">
-        <h2 class="subtitle">Large Scale Emotion Detection Reference</h2>
+        <h2 class="subtitle">Uncovering the Limits of Text-based Emotion Detection Reference</h2>
       </div>
 
       <div class="is-pulled-right">
@@ -20,10 +20,9 @@
 
     <div class="level">
       <pre ref="models">
-@Article{nur21b,
-  Title   = {Large Scale Emotion Detection Reference},
-  Author  = {Nurud\'in \'Alvarez-Gonz\'alez and Andreas Kaltenbrunner and Vicen\c{c} G\'omez},
-  Journal = {TBD},
+@Article{limits-emotion-detection,
+  Title   = {Uncovering the Limits of Text-based Emotion Detection},
+  Author  = {Anonymous Author},
   Year    = {2021}
 }     </pre>
     </div>
@@ -44,10 +43,9 @@
 
     <div class="level">
       <pre ref="tool">
-@Article{nur21b,
+@Article{emotion-ui,
   Title   = {EmotionUI: A Web Tool For Textual Emotion Recognition Research},
-  Author  = {Nurud\'in \'Alvarez-Gonz\'alez and Andreas Kaltenbrunner and Vicen\c{c} G\'omez},
-  Journal = {TBD},
+  Author  = {Anonymous Author},
   Year    = {2021}
 }     </pre>
     </div>

@@ -11,15 +11,15 @@ export default {
   },
   computed: {
     chartData: function () {
-      const labels = this.scores.map(x => x.emotion)
-      const data = this.scores.map(x => 100 * x.score)
+      const labels = this.scores.map(x => x.label)
+      const data = this.scores.map(x => Math.round(10000 * x.score) / 100)
       const colors = this.scores.map(x => x.color)
       return {
         labels: labels,
         datasets: [{
-          borderWidth: 1,
+          borderWidth: 0.5,
           borderColor: 'black',
-          label: ['GoEmotion Probabilities'],
+          label: ['Score'],
           backgroundColor: colors,
           data: data
         }]
@@ -40,7 +40,8 @@ export default {
           }],
           xAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
+              max: 100
             },
             gridLines: {
               display: false
