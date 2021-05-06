@@ -47,7 +47,7 @@
 
                   <div>
                     <small class="is-pulled-left">
-                      {{ query.dataset }} / {{ query.extractor }} / {{ query.model }}
+                      {{ query.model }}
                     </small>
 
                     <span class="is-pulled-right">
@@ -158,34 +158,22 @@ export default {
       if (query.scores === null) return false
       if (query.scores.length === 0) return false
       return true
-    },
-    headerRow () {
-      const allColumns = ['Query', 'Dataset', 'Extractor', 'Model']
-      if (this.activeEmotions) {
-        const validQueries = this.queries.filter(x => x.status !== 'Error')
-        if (validQueries.length !== 0) {
-          const allEmotions = validQueries[0].scores.map(x => x.emotion).sort()
-          allEmotions.forEach(x => allColumns.push(x))
-        }
-      }
-      return allColumns.join('\t') + '\n'
     }
   },
   methods: {
     downloadHistory () {
-      let tsvContent = 'data:text/tsv;charset=utf-8,'
-      tsvContent += this.headerRow
+      let jsonContent = 'data:text/json;charset=utf-8,'
       const queries = this.queries.filter(x => (x.scores.length > 0) && (x.status === 'Ready'))
-      const rows = queries.map(this.queryAsRow)
+      const rows = queries.map(JSON.stringify)
       rows.forEach(function (row) {
-        tsvContent += row
+        jsonContent += row + '\n'
       })
-      const asURI = encodeURI(tsvContent)
+      const asURI = encodeURI(jsonContent)
 
       // Create the download link
       let a = document.createElement('a')
       document.body.appendChild(a)
-      a.download = 'EmotionUI-' + Date.now() + '.tsv'
+      a.download = 'EmotionUI-' + Date.now() + '.json'
       a.href = asURI
       a.click()
     },
@@ -196,8 +184,6 @@ export default {
         emotionScores = allEmotions.map(x => (x.score + '>' + x.threshold + '=' + x.active)).join('\t')
       }
       return query.query + '\t' +
-             query.dataset + '\t' +
-             query.extractor + '\t' +
              query.model + '\t' +
              emotionScores + '\n'
     },
@@ -237,8 +223,6 @@ export default {
       this.deleteIndex(index)
       this.submitQuery({
         query: queryObject.query,
-        dataset: queryObject.dataset,
-        extractor: queryObject.extractor,
         model: queryObject.model
       })
     },
@@ -251,11 +235,10 @@ export default {
     },
     submitQuery (queryObject) {
       this.currentId += 1
+      this.activeTab = 0
       const newQuery = {
         id: this.currentId,
         query: queryObject.query,
-        dataset: queryObject.dataset,
-        extractor: queryObject.extractor,
         model: queryObject.model,
         status: 'Running',
         error: null,
@@ -265,7 +248,7 @@ export default {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: queryObject.query, model: 'test' })
+        body: JSON.stringify({ text: queryObject.query, model: queryObject.model })
       }
       fetch(this.$hostname + '/predict/', requestOptions)
         .then(async response => {

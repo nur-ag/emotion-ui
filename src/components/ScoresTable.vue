@@ -71,6 +71,15 @@ export default {
           field: 'score',
           label: 'Score',
           numeric: true
+        },
+        {
+          field: 'threshold',
+          label: 'Threshold',
+          numeric: true
+        },
+        {
+          field: 'active',
+          label: 'S > T'
         }
       ],
       isPaginated: true,

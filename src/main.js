@@ -20,8 +20,8 @@ Vue.use(VueTimeago, {
 })
 
 Vue.use(Clipboard)
-Vue.config.productionTip = false
-Vue.prototype.$hostname = (Vue.config.productionTip) ? 'http://80.93.90.105:8040' : 'http://localhost:8000'
+Vue.config.productionTip = process.env.NODE_ENV === 'production'
+Vue.prototype.$hostname = (Vue.config.productionTip) ? 'http://80.93.90.105:8020' : 'http://localhost:8020'
 
 /* eslint-disable no-new */
 new Vue({

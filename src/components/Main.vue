@@ -21,7 +21,7 @@
 
               <div v-if="!isBulkMode">
                 <b-field label="Input Text">
-                  <b-input maxlength="200" rows="5" type="textarea" v-model="query" :disabled="disableInputs"></b-input>
+                  <b-input :maxlength="maxLineLength" rows="5" type="textarea" v-model="query" :disabled="disableInputs" @keyup.native.ctrl.enter="checkAndSubmit"></b-input>
                 </b-field>
               </div>
 
@@ -55,46 +55,15 @@
 
               <b-field>
                 <template slot="label">
-                  Dataset
+                  Model
                   <b-tooltip multilined position="is-right" label="Data source used to train the emotion detection model.">
                     <b-icon size="is-small" icon="info-circle"></b-icon>
                   </b-tooltip>
                 </template>
-                <b-select placeholder="Select the source data set" expanded v-model="dataset" :disabled="disableInputs">
-                  <option value="GoEmotions">GoEmotions</option>
-                  <option value="Vent">Vent</option>
+                <b-select placeholder="Select the source data set" expanded v-model="model" :disabled="disableInputs">
+                  <option value="GoEmotions">GoEmotions (27 Emotions + Neutral)</option>
+                  <option value="Vent">Vent (88 Emotions)</option>
                 </b-select>
-              </b-field>
-
-              <b-field>
-                <template slot="label">
-                  Representation
-                  <b-tooltip multilined label="Text representation method to use as input to the learning algorithm.">
-                    <b-icon size="is-small" icon="info-circle"></b-icon>
-                  </b-tooltip>
-                </template>
-                <b-select placeholder="Select the text representation" expanded v-model="extractor" :disabled="disableInputs">
-                  <option value="Bag of Words">Bag of Words</option>
-                  <option value="TF-IDF">TF-IDF</option>
-                  <option value="FastText">FastText</option>
-                  <option value="BERT">BERT</option>
-                </b-select>
-              </b-field>
-
-              <b-field>
-                <template slot="label">
-                  Model
-                  <b-tooltip multilined position="is-right" label="Learning algorithm to recognise emotions from the text representations.">
-                    <b-icon size="is-small" icon="info-circle"></b-icon>
-                  </b-tooltip>
-                </template>
-                  <b-select placeholder="Select the classification model" expanded v-model="model" :disabled="disableInputs">
-                      <option value="Naive Bayes">Naive Bayes</option>
-                      <option value="Logistic Regression">Logistic Regression</option>
-                      <option value="Random Forest">Random Forest</option>
-                      <option value="DNN with Pooling">DNN with Pooling</option>
-                      <option value="Pooled Bi-LSTM">Pooled Bi-LSTM</option>
-                  </b-select>
               </b-field>
 
               <div class="buttons">
@@ -129,13 +98,12 @@ export default {
   data () {
     return {
       query: '',
-      dataset: null,
-      extractor: null,
-      model: null,
+      model: 'Vent',
       isBulkMode: false,
       disableInputs: false,
       dropFiles: [],
-      filesToProcess: 0
+      filesToProcess: 0,
+      maxLineLength: 1024
     }
   },
   computed: {
@@ -143,8 +111,6 @@ export default {
       const hasQueryContent = !(this.cleanQuery.length > 0 ||
                                 this.dropFiles.length > 0)
       return hasQueryContent ||
-             this.dataset === null ||
-             this.extractor === null ||
              this.model === null ||
              this.disableInputs
     },
@@ -153,6 +119,11 @@ export default {
     }
   },
   methods: {
+    checkAndSubmit () {
+      if (!this.isButtonDisabled) {
+        this.submit()
+      }
+    },
     submit () {
       if (this.isBulkMode) {
         this.disableInputs = true
@@ -170,7 +141,9 @@ export default {
     normalizeInput (text) {
       const trimmedText = text.trim()
       const whitespaceRemoved = trimmedText.replace(/\s+/g, ' ')
-      return whitespaceRemoved
+      const maxLength = Math.min(this.maxLineLength, whitespaceRemoved.length)
+      const withMaxLength = whitespaceRemoved.slice(0, maxLength)
+      return withMaxLength
     },
     extractDropFileLines () {
       this.dropFiles.forEach(this.extractFileLines)
@@ -178,8 +151,6 @@ export default {
     buildQueryObject (query) {
       const queryObject = {
         query: this.normalizeInput(query),
-        dataset: this.dataset,
-        extractor: this.extractor,
         model: this.model
       }
       return queryObject

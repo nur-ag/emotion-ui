@@ -32,7 +32,12 @@
       <div>
         <b-notification v-if="query.error != null" class="is-danger">
           <h2 class="subtitle">Oops! Something went wrong!</h2>
-          {{ query.error }}
+          <p>
+            {{ query.error }}
+          </p>
+          <p class="is-size-7">
+            Please make sure you are connected to the internet. If using a VPN, try disabling it.
+          </p>
         </b-notification>
 
         <h2 class="subtitle">
@@ -107,7 +112,7 @@ export default {
   },
   data () {
     return {
-      maxToPredict: 5,
+      maxToPredict: 10,
       showOnlyActive: true
     }
   },
