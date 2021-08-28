@@ -2,6 +2,8 @@
 
 > Web interface for Emotion Detection models on Large Scale Datasets
 
+The EmotionUI connects to the interface provided by the `serve.py` [module](https://github.com/nur-ag/emotion-classification/blob/master/src/serve.py) in the companion repository for "[Uncovering the Limits of Text-based Emotion Detection](https://github.com/nur-ag/emotion-classification/)". We provide Docker images for the best performing models in [DockerHub](https://hub.docker.com/r/nursystems/emotion-models).
+
 ## Build Setup
 
 ``` bash
@@ -17,5 +19,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
