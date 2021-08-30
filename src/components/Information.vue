@@ -20,9 +20,9 @@
 
     <div class="level">
       <pre ref="models">
-@Article{limits-emotion-detection,
+@Article{alvarez-gonzalez-etal-2021-uncovering,
   Title   = {Uncovering the Limits of Text-based Emotion Detection},
-  Author  = {Anonymous Author},
+  Author  = {Alvarez-Gonzalez, Nurudin and Kaltenbrunner, Andreas and G\'omez, Vicen\c{c}},
   Year    = {2021}
 }     </pre>
     </div>
@@ -43,9 +43,9 @@
 
     <div class="level">
       <pre ref="tool">
-@Article{emotion-ui,
+@Article{alvarez-gonzalez-etal-2021-emotionui,
   Title   = {EmotionUI: A Web Tool For Textual Emotion Recognition Research},
-  Author  = {Anonymous Author},
+  Author  = {Alvarez-Gonzalez, Nurudin and Kaltenbrunner, Andreas and G\'omez, Vicen\c{c}},
   Year    = {2021}
 }     </pre>
     </div>
