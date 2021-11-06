@@ -20,10 +20,19 @@
 
     <div class="level">
       <pre ref="models">
-@Article{alvarez-gonzalez-etal-2021-uncovering,
-  Title   = {Uncovering the Limits of Text-based Emotion Detection},
-  Author  = {Alvarez-Gonzalez, Nurudin and Kaltenbrunner, Andreas and G\'omez, Vicen\c{c}},
-  Year    = {2021}
+@inproceedings{alvarez-gonzalez-etal-2021-uncovering-limits,
+    title = "Uncovering the Limits of Text-based Emotion Detection",
+    author = "Alvarez-Gonzalez, Nurudin  and
+      Kaltenbrunner, Andreas  and
+      G{\'o}mez, Vicen{\c{c}}",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2021",
+    month = nov,
+    year = "2021",
+    address = "Punta Cana, Dominican Republic",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.findings-emnlp.219",
+    pages = "2560--2583",
+    abstract = "Identifying emotions from text is crucial for a variety of real world tasks. We consider the two largest now-available corpora for emotion classification: GoEmotions, with 58k messages labelled by readers, and Vent, with 33M writer-labelled messages. We design a benchmark and evaluate several feature spaces and learning algorithms, including two simple yet novel models on top of BERT that outperform previous strong baselines on GoEmotions. Through an experiment with human participants, we also analyze the differences between how writers express emotions and how readers perceive them. Our results suggest that emotions expressed by writers are harder to identify than emotions that readers perceive. We share a public web interface for researchers to explore our models.",
 }     </pre>
     </div>
 
