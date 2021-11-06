@@ -8,7 +8,7 @@
 
     <div class="level">
       <div class="is-pulled-left">
-        <h2 class="subtitle">Uncovering the Limits of Text-based Emotion Detection Reference</h2>
+        <h2 class="subtitle"><a href="https://aclanthology.org/2021.findings-emnlp.219/">Uncovering the Limits of Text-based Emotion Detection</a> Reference</h2>
       </div>
 
       <div class="is-pulled-right">
