@@ -8,15 +8,22 @@
 
     <div class="level">
       <div class="is-pulled-left">
-        <h2 class="subtitle"><a href="https://aclanthology.org/2021.findings-emnlp.219/">Uncovering the Limits of Text-based Emotion Detection</a> Reference</h2>
+        <h2 class="subtitle"><a href="https://aclanthology.org/2021.findings-emnlp.219/">Uncovering the Limits of Text-based Emotion Detection</a></h2>
       </div>
+    </div>
 
-      <div class="is-pulled-right">
+    <div class="container">
+      <div class="buttons has-addons is-right">
         <b-button type="is-primary" size="is-small" icon-left="copy" v-clipboard="() => $refs.models.innerText">
           Copy BibTex
         </b-button>
+        <b-button type="is-primary" size="is-small" icon-left="copy" v-clipboard="() => $refs.modelsApa.innerText">
+          Copy APA-Style
+        </b-button>
       </div>
     </div>
+
+    <h4>BibTex:</h4>
 
     <div class="level">
       <pre ref="models">
@@ -36,27 +43,52 @@
 }     </pre>
     </div>
 
+    <h4>APA:</h4>
+
+    <div class="level">
+      <pre ref="modelsApa">
+Alvarez-Gonzalez, N., Kaltenbrunner, A., & Gómez, V. (2021, November). Uncovering the Limits of Text-based Emotion Detection. Findings of the Association for Computational Linguistics: EMNLP 2021, 2560–2583. Opgehaal van https://aclanthology.org/2021.findings-emnlp.219
+      </pre>
+    </div>
+
     <hr/>
 
     <div class="level">
       <div class="is-pulled-left">
-        <h2 class="subtitle">Citing the Emotion UI</h2>
+        <h2 class="subtitle">Emotion UI</h2>
       </div>
+    </div>
 
-      <div class="is-pulled-right">
+    <div class="container">
+      <div class="buttons has-addons is-right">
         <b-button type="is-primary" size="is-small" icon-left="copy" v-clipboard="() => $refs.tool.innerText">
           Copy BibTex
+        </b-button>
+        <b-button type="is-primary" size="is-small" icon-left="copy" v-clipboard="() => $refs.toolApa.innerText">
+          Copy APA-Style
         </b-button>
       </div>
     </div>
 
+    <h4>BibTex:</h4>
+
     <div class="level">
       <pre ref="tool">
-@Article{alvarez-gonzalez-etal-2021-emotionui,
-  Title   = {EmotionUI: A Web Tool For Textual Emotion Recognition Research},
-  Author  = {Alvarez-Gonzalez, Nurudin and Kaltenbrunner, Andreas and G\'omez, Vicen\c{c}},
-  Year    = {2021}
+@online{emotionui,
+   title={Emotion{UI}: {A} {W}eb {I}nterface to {E}xplore {E}motion {D}etection {M}odels.},
+   url={http://emotionui.nur.systems/},
+   note = {{P}ublic {R}elease at \url{http://emotionui.nur.systems/}.},
+   year={2021},
+   author={Alvarez-Gonzalez, Nurudin and Kaltenbrunner, Andreas and Gómez, Vicenç}
 }     </pre>
+    </div>
+
+    <h4>APA:</h4>
+
+    <div class="level">
+      <pre ref="toolApa">
+Alvarez-Gonzalez, N., Kaltenbrunner, A., & Gómez, V. (2021). EmotionUI: A Web Interface to Explore Emotion Detection Models. Public Release at http://emotionui.nur.systems/. 
+      </pre>
     </div>
   </section>
 </template>
