@@ -3,6 +3,14 @@
     <p>
       The Emotion UI lets you type text to annotate it following two different emotional annotation models: <b>GoEmotions</b> or <b>Vent</b>. GoEmotions is an explicit model based on text annotations from human judges in an English Reddit dataset into <b>28 different emotional classes including Neutral</b>. Vent is an implicit model built from the homonymous social network. Vent users send messages tagging them with their current emotional state into <b>88 different emotional classes and 9 emotion categories</b>.
     </p>
+    <br/>
+    <p>
+      We are no <b>longer able to host the underlying EmotionUI models ourselves</b>. To use the EmotionUI with <b>locally-running models</b>, you can run our <a href="https://hub.docker.com/r/nursystems/emotion-models"><b>Docker image from DockerHub</b></a>. Use:
+    </p>
+    <br/>
+    <pre>
+docker pull nursystems/emotion-models
+docker run --rm -p 8020:8020 -ti nursystems/emotion-models</pre>
 
     <hr/>
 
@@ -87,7 +95,7 @@ Alvarez-Gonzalez, N., Kaltenbrunner, A., & Gómez, V. (2021, November). Uncoveri
 
     <div class="level">
       <pre ref="toolApa">
-Alvarez-Gonzalez, N., Kaltenbrunner, A., & Gómez, V. (2021). EmotionUI: A Web Interface to Explore Emotion Detection Models. Public Release at http://emotionui.nur.systems/. 
+Alvarez-Gonzalez, N., Kaltenbrunner, A., & Gómez, V. (2021). EmotionUI: A Web Interface to Explore Emotion Detection Models. Public Release at http://emotionui.nur.systems/.
       </pre>
     </div>
   </section>
