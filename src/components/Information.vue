@@ -5,7 +5,7 @@
     </p>
     <br/>
     <p>
-      We are no <b>longer able to host the underlying EmotionUI models ourselves</b>. To use the EmotionUI with <b>locally-running models</b>, you can run our <a href="https://hub.docker.com/r/nursystems/emotion-models"><b>Docker image from DockerHub</b></a>. Use:
+      We currently <b>host the underlying EmotionUI models</b> through our university network, which may not serve many requests. To use the EmotionUI with <b>locally-running models</b>, you can run our <a href="https://hub.docker.com/r/nursystems/emotion-models"><b>Docker image from DockerHub</b></a>. Use:
     </p>
     <br/>
     <pre>
